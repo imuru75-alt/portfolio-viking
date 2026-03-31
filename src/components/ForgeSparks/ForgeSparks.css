@@ -1,0 +1,34 @@
+@reference "tailwindcss";
+
+.sparks-container {
+  @apply absolute inset-0 pointer-events-none overflow-hidden z-0;
+}
+
+.spark {
+  @apply absolute bottom-[-10px] rounded-full;
+  background-color: var(--color-dragon-fire);
+  box-shadow: 0 0 10px 2px var(--color-dragon-fire);
+  animation: floatUp linear infinite;
+}
+
+.forge-glow {
+  @apply absolute bottom-0 left-0 w-full h-[40vh];
+  background: linear-gradient(to top, rgba(234, 88, 12, 0.15) 0%, transparent 100%);
+  filter: blur(20px);
+}
+
+/* Анимация: искра летит вверх и слегка виляет (эффект горячего воздуха) */
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-50vh) translateX(20px) scale(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(-20px) scale(0);
+    opacity: 0;
+  }
+}

@@ -1,0 +1,350 @@
+@reference "tailwindcss";
+
+.trophies-section {
+  @apply relative pt-32 pb-40 z-10 overflow-hidden;
+  background-color: var(--color-forge-bg);
+  /* Базовый ночной фон */
+  background: radial-gradient(circle at bottom, #022a42 0%, #060b13 60%, var(--color-forge-bg) 100%);
+}
+
+/* === ЛЕДЯНОЙ ПЕЙЗАЖ (ГОРА И ЛЬДЫ) === */
+.landscape-container {
+  @apply absolute inset-0 pointer-events-none z-0 overflow-hidden;
+}
+
+/* Огромная далекая гора */
+.distant-mountain {
+  @apply absolute bottom-0 left-1/2 -translate-x-1/2 w-[150vw] md:w-[80vw] h-[80vh];
+  background: linear-gradient(to bottom, transparent 5%, rgba(14, 165, 233, 0.15) 30%, rgba(2, 6, 23, 0.9) 100%);
+  clip-path: polygon(50% 10%, 65% 35%, 85% 60%, 100% 100%, 0% 100%, 15% 60%, 35% 35%);
+  filter: blur(4px);
+}
+
+/* Облака, плывущие вокруг вершины */
+.distant-clouds {
+  @apply absolute top-[10vh] left-0 w-full h-[30vh] opacity-40;
+  background: radial-gradient(ellipse at top center, rgba(255, 255, 255, 0.05) 0%, transparent 70%);
+  filter: blur(20px);
+  animation: driftClouds 30s infinite alternate linear;
+}
+
+/* Ледяные торосы (острые скалы) на горизонте */
+.ice-horizon {
+  @apply absolute bottom-0 left-0 w-full h-[30vh] opacity-60;
+  background: linear-gradient(to bottom, rgba(34, 211, 238, 0.2) 0%, rgba(2, 6, 23, 1) 100%);
+  clip-path: polygon(0% 100%, 0% 60%, 10% 40%, 20% 70%, 35% 20%, 50% 60%, 65% 15%, 80% 65%, 90% 30%, 100% 70%, 100% 100%);
+  filter: blur(1px);
+}
+
+@keyframes driftClouds {
+  0% { transform: translateX(-5%); }
+  100% { transform: translateX(5%); }
+}
+
+/* === МИСТИЧЕСКИЙ ТУМАН И ЯРКИЙ СНЕГ === */
+.mystic-fog {
+  @apply absolute bottom-0 left-0 w-full h-[60vh] pointer-events-none z-0;
+  background: linear-gradient(to top, rgba(14, 165, 233, 0.15) 0%, transparent 100%);
+  filter: blur(25px);
+}
+
+.snow-container {
+  @apply absolute inset-0 pointer-events-none overflow-hidden z-0;
+}
+
+/* СНЕГ СТАЛ ЯРКИМ И СВЕТЯЩИМСЯ */
+.snow-particle {
+  @apply absolute top-[-10px] rounded-full opacity-0;
+  background-color: #fff; 
+  box-shadow: 0 0 10px 2px rgba(34, 211, 238, 0.8), 0 0 20px 4px rgba(255, 255, 255, 0.5);
+  animation: fallSnow linear infinite;
+}
+
+@keyframes fallSnow {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 0.8; }
+  100% { transform: translateY(110vh) translateX(30px); opacity: 0; }
+}
+
+.trophies-container {
+  /* Расширили контейнер для 3 колонок */
+  @apply max-w-7xl mx-auto px-6 relative z-10;
+}
+
+.trophies-header {
+  @apply mb-16 text-center;
+}
+
+/* === СЕТКА В 3 КОЛОНКИ === */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 2.5rem;
+  margin-bottom: 6rem;
+  position: relative;
+  z-index: 20;
+}
+
+@media (min-width: 768px) {
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .projects-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  /* Центрируем 4-ю и 5-ю карточки в нижнем ряду */
+  .project-card:nth-child(4):nth-last-child(2) {
+    grid-column: 1 / span 2;
+    justify-self: end;
+    width: calc(100% - 1.25rem);
+  }
+  .project-card:nth-child(5):nth-last-child(1) {
+    grid-column: 2 / span 2;
+    justify-self: start;
+    width: calc(100% - 1.25rem);
+  }
+}
+
+/* === КАРТОЧКА ПРОЕКТА (ПЛАВАЮЩИЙ ЛЕДЯНОЙ БЛОК) === */
+.project-card {
+  @apply relative bg-slate-900/60 rounded-xl overflow-hidden border border-cyan-900/50 flex flex-col backdrop-blur-md;
+  box-shadow: inset 0 0 40px rgba(6, 182, 212, 0.05), 0 10px 30px rgba(0,0,0,0.5);
+  
+  /* Анимация левитации (разная задержка для каждой карточки) */
+  animation: levitateCard 8s ease-in-out infinite alternate;
+  /* Плавный переход при наведении (важно переопределить transform от анимации) */
+  transition: border-color 0.5s, box-shadow 0.5s, filter 0.5s;
+}
+
+/* Рассинхрон левитации карточек */
+.project-card:nth-child(1) { animation-delay: 0s; }
+.project-card:nth-child(2) { animation-delay: -2s; }
+.project-card:nth-child(3) { animation-delay: -4s; }
+.project-card:nth-child(4) { animation-delay: -6s; }
+.project-card:nth-child(5) { animation-delay: -3s; }
+
+@keyframes levitateCard {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-15px); }
+}
+
+/* Эффект инея/льда по краям карточки */
+.project-card::before {
+  content: '';
+  @apply absolute inset-0 pointer-events-none opacity-30 mix-blend-screen z-20 transition-opacity duration-500;
+  box-shadow: inset 0 0 50px rgba(186, 230, 253, 0.2);
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.1) 0%, transparent 40%),
+              radial-gradient(circle at bottom left, rgba(255,255,255,0.1) 0%, transparent 40%);
+}
+
+.project-card:hover {
+  @apply border-cyan-400/60;
+  box-shadow: inset 0 0 60px rgba(6, 182, 212, 0.15), 0 25px 50px -10px rgba(6, 182, 212, 0.3);
+  /* При наведении останавливаем левитацию и поднимаем карточку */
+  animation-play-state: paused;
+  transform: translateY(-20px) scale(1.02);
+}
+
+.project-card:hover::before {
+  @apply opacity-80;
+  box-shadow: inset 0 0 80px rgba(186, 230, 253, 0.4);
+}
+
+.card-corner {
+  @apply absolute text-xl text-cyan-600/0 transition-all duration-500 z-30 pointer-events-none;
+}
+
+.corner-tl { top: 12px; left: 12px; }
+.corner-tr { top: 12px; right: 12px; }
+.corner-bl { bottom: 12px; left: 12px; }
+.corner-br { bottom: 12px; right: 12px; }
+
+.project-card:hover .card-corner {
+  @apply text-cyan-300;
+  text-shadow: 0 0 15px rgba(34, 211, 238, 1);
+}
+
+/* Бейджик "Выковывается" */
+.project-status-badge {
+  @apply absolute top-4 right-4 z-30 bg-slate-950/80 text-cyan-400 text-xs px-3 py-1 border border-cyan-800/50 rounded backdrop-blur-md uppercase tracking-widest;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.2);
+}
+
+.project-image-wrapper {
+  @apply relative overflow-hidden aspect-video border-b border-cyan-900/30;
+}
+
+.project-image {
+  @apply w-full h-full object-cover transition-transform duration-700;
+  filter: brightness(0.6) sepia(0.5) hue-rotate(180deg) saturate(2);
+}
+
+.project-card:hover .project-image {
+  @apply scale-110;
+  filter: brightness(0.9) sepia(0) hue-rotate(0deg) saturate(1);
+}
+
+.project-overlay {
+  @apply absolute inset-0 bg-slate-950/70 opacity-0 flex items-center justify-center transition-opacity duration-300 z-10;
+}
+
+.project-card:hover .project-overlay {
+  @apply opacity-100;
+}
+
+.btn-mystic {
+  @apply px-8 py-3 bg-cyan-950/80 text-cyan-300 font-bold tracking-widest uppercase text-sm border border-cyan-600 rounded-sm transition-all transform translate-y-4 backdrop-blur-sm;
+}
+
+.project-card:hover .btn-mystic {
+  @apply translate-y-0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.1s;
+}
+
+.btn-mystic:hover {
+  @apply bg-cyan-600 text-white border-cyan-300;
+  box-shadow: 0 0 20px rgba(34, 211, 238, 0.6);
+}
+
+.project-content {
+  @apply p-8 flex flex-col flex-grow relative z-20;
+}
+
+.project-title {
+  @apply text-xl md:text-2xl font-bold text-white mb-3 transition-colors;
+}
+
+.project-card:hover .project-title {
+  @apply text-cyan-300;
+  text-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
+}
+
+.project-desc {
+  @apply text-gray-400 text-sm mb-6 flex-grow leading-relaxed;
+}
+
+.project-tags {
+  @apply flex flex-wrap gap-2;
+}
+
+.project-tag {
+  @apply px-3 py-1 text-xs font-medium text-slate-300 bg-slate-900 rounded border border-cyan-900/30 transition-colors duration-300;
+}
+
+.project-card:hover .project-tag {
+  @apply border-cyan-700/50 bg-cyan-950/50 text-cyan-100;
+}
+
+/* === ГНЕЗДО С ЛЕДЯНЫМИ ЯЙЦАМИ === */
+.dragon-nest-wrapper {
+  @apply relative mt-24 flex flex-col items-center justify-center z-10;
+}
+
+.egg-image-container {
+  @apply relative flex items-center justify-center;
+  width: 250px;
+  height: 250px;
+  animation: levitateEgg 6s ease-in-out infinite alternate;
+}
+
+.egg-aura {
+  @apply absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none;
+  width: 150px;
+  height: 150px;
+  background: radial-gradient(circle, rgba(34, 211, 238, 0.4) 0%, transparent 70%);
+  filter: blur(15px);
+  animation: auraPulse 3s infinite alternate;
+  z-index: 0;
+}
+
+.real-egg-image {
+  @apply relative z-10 object-contain w-full h-full;
+  mix-blend-mode: screen; 
+  filter: drop-shadow(0 0 15px rgba(34, 211, 238, 0.5)) contrast(1.1) brightness(1.2);
+}
+
+@keyframes levitateEgg {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-20px); }
+}
+
+@keyframes auraPulse {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+  100% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; box-shadow: 0 0 40px rgba(34, 211, 238, 0.6); }
+}
+
+/* === МОДАЛЬНОЕ ОКНО === */
+.modal-backdrop {
+  @apply fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex items-center justify-center p-4;
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.modal-content {
+  @apply bg-slate-950 rounded-xl max-w-3xl w-full max-h-[90vh] overflow-y-auto relative;
+  box-shadow: 0 0 50px rgba(0, 0, 0, 1), inset 0 0 0 1px rgba(6, 182, 212, 0.2);
+  animation: zoomIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.mystic-border::before {
+  content: '';
+  @apply absolute inset-0 pointer-events-none rounded-xl border border-cyan-500/20;
+  animation: borderBreatheMystic 4s infinite alternate ease-in-out;
+}
+
+@keyframes borderBreatheMystic {
+  0% { box-shadow: inset 0 0 10px rgba(6, 182, 212, 0.05); }
+  100% { box-shadow: inset 0 0 30px rgba(6, 182, 212, 0.2); border-color: rgba(6, 182, 212, 0.4); }
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes zoomIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+.modal-close {
+  @apply absolute top-4 right-4 text-white hover:text-black bg-black/50 border border-white/20 rounded-sm p-2 hover:bg-cyan-500 hover:border-cyan-400 transition-all z-20 backdrop-blur-md;
+}
+
+.modal-image-container {
+  @apply relative w-full aspect-video border-b border-cyan-900/30 flex items-center justify-center;
+}
+
+.modal-image {
+  @apply absolute inset-0 w-full h-full object-cover;
+}
+
+.modal-image-overlay {
+  @apply absolute inset-0 pointer-events-none;
+  background: linear-gradient(to bottom, transparent 40%, rgba(2, 6, 23, 1) 100%);
+}
+
+.modal-status-overlay {
+  @apply relative z-10 flex flex-col items-center justify-center bg-slate-950/80 w-full h-full backdrop-blur-sm;
+}
+
+.modal-body {
+  @apply p-8 relative z-10;
+}
+
+.modal-title {
+  @apply text-3xl font-bold mb-4 flex items-center gap-3;
+}
+
+.modal-desc {
+  @apply text-slate-300 text-base leading-relaxed mb-8;
+}
+
+.modal-actions {
+  @apply flex gap-4 flex-wrap;
+}
+
+.action-link {
+  @apply flex items-center gap-2 px-6 py-3 bg-transparent text-slate-300 font-bold text-sm tracking-wider uppercase rounded-sm hover:text-white transition-colors border border-slate-700 hover:border-slate-500;
+}
+
+.action-link.disabled {
+  @apply border-slate-800 text-slate-600 bg-slate-900/50 cursor-not-allowed hover:border-slate-800 hover:text-slate-600;
+}

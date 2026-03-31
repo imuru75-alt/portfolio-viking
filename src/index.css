@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@400;500;700&display=swap');
+
+@theme {
+  --font-cinzel: "Cinzel", serif;
+  --font-inter: "Inter", sans-serif;
+}
+
+@layer base {
+  :root {
+    --color-forge-bg: #0f172a;
+    --color-dragon-fire: #ea580c;
+    --color-night-fury: #3b82f6;
+  }
+
+  body {
+    background-color: var(--color-forge-bg);
+    color: #d1d5db; /* gray-300 */
+    font-family: "Inter", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  .text-dragon-fire { color: var(--color-dragon-fire); }
+}

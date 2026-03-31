@@ -1,0 +1,47 @@
+@reference "tailwindcss";
+
+/* === HEADER === */
+
+.header-wrapper {
+  @apply fixed top-0 left-0 w-full z-50 backdrop-blur-md border-b border-white/5;
+  background-color: rgba(15, 23, 42, 0.8);
+}
+
+.header-container {
+  @apply max-w-7xl mx-auto px-6 h-20 flex items-center justify-between;
+}
+
+/* Убрали font-cinzel отсюда */
+.header-logo {
+  @apply font-bold text-2xl tracking-widest text-white cursor-pointer flex items-center gap-2;
+}
+
+/* Убрали text-dragon-fire отсюда, оставили только размер */
+.logo-rune {
+  @apply text-3xl font-normal;
+}
+
+.header-nav {
+  @apply hidden md:flex items-center gap-10;
+}
+
+.nav-link {
+  @apply text-xs font-bold tracking-[0.15em] text-gray-400 uppercase transition-colors duration-300 hover:text-white;
+}
+
+.header-actions {
+  @apply flex items-center;
+}
+
+/* Убрали border-dragon-fire, bg-dragon-fire и сложные shadow отсюда */
+.contact-btn {
+  @apply relative px-6 py-2.5 text-xs font-bold uppercase tracking-widest text-white border rounded-sm overflow-hidden transition-all duration-300 cursor-pointer bg-transparent hover:text-black;
+  
+  /* Пишем кастомные цвета обычным CSS, чтобы точно работало */
+  border-color: var(--color-dragon-fire);
+}
+
+.contact-btn:hover {
+  background-color: var(--color-dragon-fire);
+  box-shadow: 0 0 15px rgba(234, 88, 12, 0.4);
+}
